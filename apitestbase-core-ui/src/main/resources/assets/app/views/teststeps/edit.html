@@ -1,0 +1,34 @@
+<div ng-controller="TeststepsController" ng-init="findOne()">
+  <div class="row page-header" id="page-header">
+    <div class="col-lg-7 page-header-part1">
+      <h3><div>Test Step - {{teststep.name}}</div></h3>
+    </div>
+    <div class="page-header-part2">
+      <div class="col-lg-2 text-center">
+        <h4><label irt-successful-message></label></h4>
+      </div>
+      <div class="col-lg-1 text-left">
+        <h4><a class="back-link" ui-sref="testcase_edit({testcaseId: teststep.testcaseId})">Back</a></h4>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <form name="teststepForm" class="form-horizontal" role="form" novalidate>
+      <uib-tabset active="activeTabIndex">
+        <uib-tab heading="Basic Info">
+          <div ng-include="'/ui/views/teststeps/edit-basic-info.html'"></div>
+        </uib-tab>
+        <!-- can't use ng-if to replace ng-show below, as ng-if seems turning the tab index to 2 instead of 1
+        when the tab is displayed  -->
+        <uib-tab ng-show="teststep.endpoint || teststep.endpointProperty" heading="Endpoint Details"
+                 deselect="isInShareEndpointMode() ? cancelShareEndpoint() : angular.noop()">
+          <div ng-include="'/ui/views/teststeps/edit-endpoint-details.html'"></div>
+        </uib-tab>
+        <uib-tab heading="{{ getActionOrInvocationTabHeading() }}"
+                 deselect="getActionOrInvocationTabHeading() === 'Invocation' ? $broadcast('InvocationTabDeselected') : angular.noop()">
+          <div ng-include="'/ui/views/teststeps/edit-invocation-details.html'"></div>
+        </uib-tab>
+      </uib-tabset>
+    </form>
+  </div>
+</div>

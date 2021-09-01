@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>apitestbase-parent</artifactId>
+        <groupId>io.apitestbase</groupId>
+        <version>0.18.6-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>apitestbase-assembly</artifactId>
+
+    <properties>
+        <lib.iib>lib/iib</lib.iib>
+        <lib.jdbc.oracle>lib/jdbc/oracle</lib.jdbc.oracle>
+        <lib.jdbc.sqlserver>lib/jdbc/sqlserver</lib.jdbc.sqlserver>
+        <lib.mq>lib/mq</lib.mq>
+        <jdbc.driver.oracle.6>${lib.jdbc.oracle}/ojdbc6.jar</jdbc.driver.oracle.6>
+        <jdbc.driver.oracle.8>${lib.jdbc.oracle}/ojdbc8.jar</jdbc.driver.oracle.8>
+        <jdbc.driver.sqlserver>${lib.jdbc.sqlserver}/sqljdbc41.jar</jdbc.driver.sqlserver>
+        <mq.jar.com.ibm.mq>${lib.mq}/com.ibm.mq.jar</mq.jar.com.ibm.mq>
+        <mq.jar.com.ibm.mq.jmqi>${lib.mq}/com.ibm.mq.jmqi.jar</mq.jar.com.ibm.mq.jmqi>
+        <mq.jar.com.ibm.mq.headers>${lib.mq}/com.ibm.mq.headers.jar</mq.jar.com.ibm.mq.headers>
+        <mq.jar.com.ibm.mq.pcf>${lib.mq}/com.ibm.mq.pcf.jar</mq.jar.com.ibm.mq.pcf>
+        <distDir>dist</distDir>
+        <uberJarFileName>apitestbase-${project.version}</uberJarFileName>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.apitestbase</groupId>
+            <artifactId>apitestbase-core-server</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.apitestbase</groupId>
+            <artifactId>apitestbase-core-ui</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.apitestbase</groupId>
+            <artifactId>apitestbase-jms-solace</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.apitestbase</groupId>
+            <artifactId>apitestbase-mqtt</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>prod</id>
+
+            <repositories>
+                <repository>
+                    <id>snapshots-repo</id>
+                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+
+            <dependencies>
+                <dependency>
+                    <groupId>io.apitestbase</groupId>
+                    <artifactId>apitestbase-mq</artifactId>
+                    <version>${project.version}</version>
+                    <!-- exclude transitive dependencies -->
+                    <exclusions>
+                        <exclusion>
+                            <groupId>*</groupId>
+                            <artifactId>*</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>io.apitestbase</groupId>
+                    <artifactId>apitestbase-iib</artifactId>
+                    <version>${project.version}</version>
+                    <!-- exclude transitive dependencies -->
+                    <exclusions>
+                        <exclusion>
+                            <groupId>*</groupId>
+                            <artifactId>*</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <!-- create uber jar -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <finalName>${uberJarFileName}</finalName>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <!-- not excluding license files, such as LICENSE, LICENSE.md and LICENSE.txt -->
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/maven/**</exclude>
+                                        <exclude>META-INF/resources/webjars/*/*/src/**</exclude>
+                                        <exclude>META-INF/resources/webjars/*/*/less/**</exclude>
+                                        <exclude>META-INF/resources/webjars/*/*/scss/**</exclude>
+                                        <exclude>META-INF/resources/webjars/*/*/i18n/**</exclude>
+                                        <exclude>META-INF/resources/webjars/**/*.gz</exclude>
+                                        <exclude>META-INF/resources/webjars/**/*.gzip</exclude>
+                                        <exclude>META-INF/resources/webjars/**/*.map</exclude>
+                                        <exclude>META-INF/resources/webjars/**/*.json</exclude>
+                                        <exclude>META-INF/resources/webjars/**/*.sh</exclude>
+                                        <exclude>META-INF/resources/webjars/**/*.swf</exclude>
+                                        <exclude>META-INF/resources/webjars/**/.gitignore</exclude>
+                                        <exclude>META-INF/resources/webjars/**/.npmignore</exclude>
+                                        <exclude>META-INF/resources/webjars/**/README.md</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <manifestEntries>
+                                                <Main-Class>io.apitestbase.APITestBaseApplication</Main-Class>
+                                                <Class-Path>${jdbc.driver.oracle.6} ${jdbc.driver.oracle.8} ${jdbc.driver.sqlserver} ${mq.jar.com.ibm.mq} ${mq.jar.com.ibm.mq.jmqi} ${mq.jar.com.ibm.mq.pcf} ${mq.jar.com.ibm.mq.headers}</Class-Path>
+                                            </manifestEntries>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/cxf/bus-extensions.txt</resource>
+                                        </transformer>
+                                    </transformers>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- produce dist -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-resources</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <includeEmptyDirs>true</includeEmptyDirs>
+                                    <outputDirectory>${distDir}</outputDirectory>
+                                    <resources>
+                                        <!-- copy apitestbase uber jar -->
+                                        <resource>
+                                            <directory>target</directory>
+                                            <includes>
+                                                <include>${uberJarFileName}.jar</include>
+                                            </includes>
+                                        </resource>
+                                        <!-- copy apitestbase-upgrade-to uber jar -->
+                                        <resource>
+                                            <directory>../apitestbase-upgrade/target</directory>
+                                            <includes>
+                                                <include>apitestbase-upgrade-to-${project.version}.jar</include>
+                                            </includes>
+                                        </resource>
+                                        <!-- copy config.yml -->
+                                        <resource>
+                                            <directory>../apitestbase-core-server</directory>
+                                            <includes>
+                                                <include>config.yml</include>
+                                            </includes>
+                                        </resource>
+                                        <!-- copy files -->
+                                        <resource>
+                                            <directory>files</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- create empty folders under lib in the dist -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>create-empty-folders</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <mkdir dir="${distDir}/${lib.iib}/v100" />
+                                        <mkdir dir="${distDir}/${lib.jdbc.oracle}" />
+                                        <mkdir dir="${distDir}/${lib.jdbc.sqlserver}" />
+                                        <mkdir dir="${distDir}/${lib.mq}" />
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>dev</id>
+            <properties>
+                <dw.mode />
+            </properties>
+            <build>
+                <plugins>
+                    <!-- launch the application by classes (not by uber jar) -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>start-dropwizard-app</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                                <configuration>
+                                    <mainClass>io.apitestbase.APITestBaseApplication</mainClass>
+                                    <additionalClasspathElements>
+                                        <additionalClasspathElement>../${jdbc.driver.oracle.6}</additionalClasspathElement>
+                                        <additionalClasspathElement>../${jdbc.driver.oracle.8}</additionalClasspathElement>
+                                        <additionalClasspathElement>../${jdbc.driver.sqlserver}</additionalClasspathElement>
+                                    </additionalClasspathElements>
+                                    <systemProperties>
+                                        <systemProperty>
+                                            <key>dw.mode</key>
+                                            <value>${dw.mode}</value>
+                                        </systemProperty>
+                                    </systemProperties>
+                                    <commandlineArgs>server apitestbase-core-server/config.yml</commandlineArgs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- This profile is intended to be used only in combination with the dev profile -->
+        <profile>
+            <id>dev-build-with-mq-testing-capabilities</id>
+            <activation>
+                <property><name>mq.version</name></property>
+            </activation>
+            <!-- These dependencies are to be obtained from the build target folders. -->
+            <dependencies>
+                <dependency>
+                    <groupId>io.apitestbase</groupId>
+                    <artifactId>apitestbase-mq</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <!-- This profile is intended to be used only in combination with the dev profile -->
+        <profile>
+            <id>dev-build-with-iib-testing-capabilities</id>
+            <activation>
+                <property><name>iib.version</name></property>
+            </activation>
+            <!-- These dependencies are to be obtained from the build target folders. -->
+            <dependencies>
+                <dependency>
+                    <groupId>io.apitestbase</groupId>
+                    <artifactId>apitestbase-iib</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+</project>

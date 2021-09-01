@@ -1,0 +1,10 @@
+<div class="form-group">
+  <label for="endpointServiceURI" class="col-lg-2 control-label">Service URI</label>
+  <div class="col-lg-10">
+    <input id="endpointServiceURI" name="endpointServiceURI" type="text" class="form-control"
+           ng-model="teststep.endpoint.url"
+           ng-change="isInShareEndpointMode() ? angular.noop() : autoSave(teststepForm.$valid)"
+           ng-readonly="appStatus.isForbidden() || (!isInShareEndpointMode() && teststep.endpoint.environment)"
+           spellcheck="false">
+  </div>
+</div>

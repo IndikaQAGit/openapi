@@ -1,0 +1,2 @@
+JSONPath "${ (assertionProperties.jsonPath??)?then(assertionProperties.jsonPath, 'null') }" evaluates to
+"${ (assertionProperties.expectedValueJSON??)?then(assertionProperties.expectedValueJSON, 'null') }".

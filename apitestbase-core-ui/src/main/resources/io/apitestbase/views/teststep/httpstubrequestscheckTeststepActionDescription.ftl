@@ -1,0 +1,1 @@
+Check the request journal of the mock server.

@@ -1,0 +1,1 @@
+Response contains "${ (assertionProperties.contains??)?then(assertionProperties.contains, 'null') }".

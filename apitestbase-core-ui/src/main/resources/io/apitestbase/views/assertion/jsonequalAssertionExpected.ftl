@@ -1,0 +1,1 @@
+<textarea class="form-control" rows="6" readonly>${ (assertionProperties.expectedJSON??)?then(generalUtilsAdatper.prettyPrintJSONOrXML(assertionProperties.expectedJSON), 'null') }</textarea>

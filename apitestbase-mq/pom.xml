@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>apitestbase-parent</artifactId>
+        <groupId>io.apitestbase</groupId>
+        <version>0.18.6-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>apitestbase-mq</artifactId>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.apitestbase</groupId>
+                <artifactId>apitestbase-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.apitestbase</groupId>
+            <artifactId>apitestbase-core-server</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- MQ dependencies. artifactId has 'com.ibm' (duplicate with groupId), only to be consistent with an old version in
+        Maven Central https://search.maven.org/#artifactdetails%7Ccom.ibm%7Ccom.ibm.mq%7C5.3.07%7Cjar. -->
+        <dependency>
+            <groupId>com.ibm</groupId>
+            <artifactId>com.ibm.mq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm</groupId>
+            <artifactId>com.ibm.mq.jmqi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm</groupId>
+            <artifactId>com.ibm.mq.headers</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm</groupId>
+            <artifactId>com.ibm.mq.pcf</artifactId>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,1 @@
+<textarea class="form-control" rows="6" readonly>${ (assertionProperties.xml??)?then(generalUtilsAdatper.prettyPrintJSONOrXML(assertionProperties.xml), 'null') }</textarea>

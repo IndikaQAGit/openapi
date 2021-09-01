@@ -1,0 +1,29 @@
+<div class="form-group">
+  <label for="endpointSOAPAddress" class="col-lg-2 control-label">SOAP Address</label>
+  <div class="col-lg-10">
+    <input id="endpointSOAPAddress" name="endpointSOAPAddress" type="text" class="form-control"
+           ng-model="teststep.endpoint.url" ng-change="endpointSOAPAddressChanged(teststepForm.$valid)"
+           ng-readonly="appStatus.isForbidden() || (!isInShareEndpointMode() && teststep.endpoint.environment)"
+           spellcheck="false">
+  </div>
+</div>
+
+<div ng-include="'/ui/views/teststeps/edit-endpoint-details-username-password.html'"></div>
+
+<div class="form-group">
+  <label for="endpointWSDLURL" class="col-lg-2 control-label">WSDL URL</label>
+  <div class="col-lg-8">
+    <input id="endpointWSDLURL" name="endpointWSDLURL" type="text" class="form-control"
+           ng-model="teststep.endpoint.otherProperties.wsdlURL"
+           ng-change="isInShareEndpointMode() ? angular.noop() : autoSave(teststepForm.$valid)"
+           ng-readonly="appStatus.isForbidden() || teststep.endpoint.otherProperties.wsdlURLByConvention ||
+             (!isInShareEndpointMode() && teststep.endpoint.environment)" spellcheck="false">
+  </div>
+  <div class="col-lg-2 checkbox">
+    <label>
+      <input type="checkbox" ng-model="teststep.endpoint.otherProperties.wsdlURLByConvention"
+             ng-change="toggleWSDLURLByConvention(teststepForm.$valid)"
+             ng-disabled="appStatus.isForbidden() || (!isInShareEndpointMode() && teststep.endpoint.environment)">By Convention
+    </label>
+  </div>
+</div>

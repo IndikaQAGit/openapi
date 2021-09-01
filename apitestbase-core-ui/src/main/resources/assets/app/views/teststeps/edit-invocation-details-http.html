@@ -1,0 +1,102 @@
+<div class="form-group form-group-reduced-bottom-margin"></div> <!-- smaller spacer -->
+
+<div class="form-group form-group-reduced-bottom-margin">
+  <div ng-if="teststep.type === 'SOAP'">
+    <label for="soapAddress" class="col-lg-2 control-label">SOAP Address</label>
+    <div class="col-lg-6">
+      <input id="soapAddress" name="soapAddress" type="text" class="form-control"
+             ng-change="$root.$broadcast('endpointSOAPAddressChanged', { isValid: teststepForm.$valid })"
+             ng-model="teststep.endpoint.url" spellcheck="false"
+             ng-readonly="appStatus.isForbidden() || teststep.endpoint.environment"> <!-- readonly when not authenticated or it is a managed endpoint -->
+    </div>
+  </div>
+  <div ng-if="teststep.type === 'HTTP'">
+    <label for="method" class="col-lg-1 control-label">Method</label>
+    <div class="col-lg-1">
+      <select name="method" id="method" class="form-control" ng-model="teststep.apiRequest.method"
+              ng-change="update(teststepForm.$valid)"
+              ng-disabled="appStatus.isForbidden() || steprun.status === 'ongoing'">
+        <option value="GET">GET</option>
+        <option value="POST">POST</option>
+        <option value="PUT">PUT</option>
+        <option value="DELETE">DELETE</option>
+      </select>
+    </div>
+    <label for="url" class="col-lg-1 control-label">URL</label>
+    <div class="col-lg-6">
+      <input id="url" name="url" type="text" class="form-control" ng-change="autoSave(teststepForm.$valid)"
+             ng-model="teststep.endpoint.url" spellcheck="false"
+             ng-readonly="appStatus.isForbidden() || teststep.endpoint.environment"> <!-- readonly when not authenticated or it is a managed endpoint -->
+    </div>
+  </div>
+  <div class="col-lg-1">
+    <button type="button" class="btn btn-info" ng-click="invoke()"
+            ng-disabled="appStatus.isForbidden() || !teststep.endpoint.url ||
+              ($scope.showRequestBodyArea() && !teststep.apiRequest.body) || steprun.status === 'ongoing'">Invoke</button>
+  </div>
+  <div class="col-lg-1 pull-right btn-group" uib-dropdown keyboard-nav>
+    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
+      <i class="fa fa-list"></i> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu">
+      <li role="menuitem"><a ng-click="toggleHTTPHeadersArea()" href="">
+        <i class="fa {{ showHTTPHeaders ? 'fa-check-square-o' : 'fa-square-o' }}"></i> Show HTTP Headers</a>
+      </li>
+      <li ng-if="teststep.type === 'SOAP'" class="divider"></li>
+      <li ng-if="teststep.type === 'SOAP'" role="menuitem" ng-class="{'disabled': appStatus.isForbidden()}">
+        <a ng-click="appStatus.isForbidden() ? $event.stopPropagation() : generateSOAPRequest()" href="">Generate Request</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- the activeTabIndex === INVOCATION_TAB_INDEX condition is required to avoid 0 initial height of the httpHeadersArea
+in the httpHeadersAreaLoadedCallback method when a SOAP or HTTP test step is newly created (hence the Basic Info tab is
+selected by default). -->
+<div id="httpHeadersArea" class="form-group form-group-reduced-bottom-margin"
+     ng-if="activeTabIndex === INVOCATION_TAB_INDEX && showHTTPHeaders">
+  <div class="col-lg-6">
+    <div ui-grid="requestHTTPHeaderGridOptions" ui-grid-resize-columns ui-grid-selection ui-grid-edit
+         class="ui-grid http-header-grid"></div>
+  </div>
+  <div class="col-lg-6">
+    <div ui-grid="responseHTTPHeaderGridOptions" ui-grid-resize-columns class="ui-grid http-header-grid"></div>
+  </div>
+</div>
+
+<div class="form-group form-group-reduced-bottom-margin" height-adjustable-element-in-column="0.8">
+  <div class="col-lg-6 full-height">
+    <textarea id="requestBody" name="requestBody" ng-model="teststep.apiRequest.body" ng-change="autoSave(teststepForm.$valid)"
+              placeholder="Request Body" class="form-control full-height-important" spellcheck="false"
+              ng-readonly="appStatus.isForbidden()" ng-show="showRequestBodyArea()"></textarea>
+  </div>
+  <div class="col-lg-6 full-height">
+    <textarea id="responseBody" name="responseBody" ng-model="steprun.response.httpBody" placeholder="Response Body"
+        class="form-control full-height-important" spellcheck="false" ng-readonly="appStatus.isForbidden()"></textarea>
+  </div>
+</div>
+
+<div class="form-group form-group-reduced-bottom-margin" id="bottomPane">
+  <div class="col-lg-12 bottom-pane-content" ng-include="'/ui/views/assertions/list-assertions.html'"
+       ng-if="showBottomPane && bottomButtonModel.selectedButton === 'Assertions'">
+  </div>
+  <div class="col-lg-12 bottom-pane-content" ng-include="'/ui/views/propertyextractors/list-property-extractors.html'"
+       ng-if="showBottomPane && bottomButtonModel.selectedButton === 'PropertyExtractors'">
+  </div>
+</div>
+<div class="form-group no-bottom-margin">
+  <div class="col-lg-3 btn-toolbar">
+    <label class="btn btn-info" ng-model="bottomButtonModel.selectedButton" uib-btn-radio="'Assertions'"
+           uncheckable>Assertions</label>
+    <label class="btn btn-info" ng-if="teststep.type === 'HTTP'" ng-model="bottomButtonModel.selectedButton"
+           uib-btn-radio="'PropertyExtractors'" uncheckable>Property Extractors</label>
+  </div>
+  <div ng-if="steprun.response" class="col-lg-4"><h5>Response Time: {{ steprun.response.responseTime }}ms</h5></div>
+</div>
+
+<script type="text/ng-template" id="httpHeaderGridEditableCellTemplate.html">
+  <div class="ui-grid-cell-contents">
+    <input type="text" class="form-control" ui-grid-editor ng-model="MODEL_COL_FIELD" spellcheck="false"
+           ng-readonly="grid.appScope.appStatus.isForbidden()">
+  </div>
+</script>

@@ -1,0 +1,84 @@
+<div class="form-group"></div> <!-- spacer -->
+<div class="form-group">
+  <label for="queueManagerAddress" class="col-lg-2 control-label">Queue Manager Address</label>
+  <div class="col-lg-8">
+    <input type="text" name="queueManagerAddress" id="queueManagerAddress" class="form-control" readonly
+           ng-model="teststep.endpoint.constructedUrl">
+  </div>
+</div>
+<div class="form-group">
+  <label for="destinationType" class="col-lg-2 control-label">Destination Type</label>
+  <div class="col-lg-2">
+    <select name="destinationType" id="destinationType" class="form-control"
+            ng-model="teststep.otherProperties.destinationType" ng-change="destinationTypeChanged(teststepForm.$valid)"
+            ng-disabled="appStatus.isForbidden() || steprun.status === 'ongoing'">
+      <option value="Queue">Queue</option>
+      <option value="Topic">Topic</option>
+    </select>
+  </div>
+  <div ng-if="teststep.otherProperties.destinationType === 'Queue'">
+    <label for="queueName" class="col-lg-1 control-label no-left-padding">Queue Name</label>
+    <div class="col-lg-5">
+      <input name="queueName" type="text" class="form-control" ng-change="autoSave(teststepForm.$valid)"
+             ng-model="teststep.otherProperties.queueName" id="queueName" spellcheck="false"
+             ng-readonly="appStatus.isForbidden()">
+    </div>
+  </div>
+  <div ng-if="teststep.otherProperties.destinationType === 'Topic'">
+    <label for="topicString" class="col-lg-1 control-label">Topic String</label>
+    <div class="col-lg-5">
+      <input name="topicString" type="text" class="form-control" ng-change="autoSave(teststepForm.$valid)"
+             ng-model="teststep.otherProperties.topicString" id="topicString" spellcheck="false"
+             ng-readonly="appStatus.isForbidden()">
+    </div>
+  </div>
+</div>
+<div class="form-group">
+  <label for="action" class="col-lg-2 control-label">Action</label>
+  <div class="col-lg-2">
+    <select name="action" id="action" class="form-control" ng-model="teststep.action"
+            ng-change="actionChanged(teststepForm.$valid)"
+            ng-disabled="appStatus.isForbidden() || steprun.status === 'ongoing'">
+      <option value="Clear" ng-if="teststep.otherProperties.destinationType === 'Queue'">Clear</option>
+      <option value="CheckDepth" ng-if="teststep.otherProperties.destinationType === 'Queue'">Check Depth</option>
+      <option value="Dequeue" ng-if="teststep.otherProperties.destinationType === 'Queue'">Dequeue</option>
+      <option value="Enqueue" ng-if="teststep.otherProperties.destinationType === 'Queue'">Enqueue</option>
+      <option value="Publish" ng-if="teststep.otherProperties.destinationType === 'Topic'">Publish</option>
+    </select>
+  </div>
+  <div class="col-lg-1">
+    <button type="button" class="btn btn-info btn-block" ng-click="doAction()"
+            ng-disabled="appStatus.isForbidden() || endpointInfoIncomplete() || actionInfoIncomplete() ||
+              steprun.status === 'ongoing'">Do</button>
+  </div>
+  <div class="col-lg-4">       <!-- Action run status message -->
+    <h5 ng-if="teststep.action === 'Clear' && steprun.status === 'ongoing'">Clearing queue ...</h5>
+    <h5 ng-if="teststep.action === 'Clear' && steprun.status === 'finished'">Queue cleared.</h5>
+    <h5 ng-if="teststep.action === 'CheckDepth' && steprun.status === 'ongoing'">Checking queue depth ...</h5>
+    <h5 ng-if="teststep.action === 'CheckDepth' && steprun.status === 'finished'">
+      Queue depth is {{ steprun.response.queueDepth }}</h5>
+    <h5 ng-if="teststep.action === 'Dequeue' && steprun.status === 'finished'">
+      {{ steprun.response === null ? 'No more message available on the queue.' : 'Message fetched.' }}</h5>
+    <h5 ng-if="teststep.action === 'Enqueue' && steprun.status === 'ongoing'">Sending message ...</h5>
+    <h5 ng-if="teststep.action === 'Enqueue' && steprun.status === 'finished'">Message sent.</h5>
+    <h5 ng-if="teststep.action === 'Publish' && steprun.status === 'ongoing'">Publishing message ...</h5>
+    <h5 ng-if="teststep.action === 'Publish' && steprun.status === 'finished'">Message published.</h5>
+  </div>
+</div>
+
+<div ng-if="teststep.action === 'CheckDepth'">
+  <div class="form-group">
+    <label for="queueDepthAssertionValue" class="col-lg-2 control-label">Assertion</label>
+    <div class="col-lg-2"><h5>Queue depth equals</h5></div>
+    <div class="col-lg-5">
+      <input name="queueDepthAssertionValue" id="queueDepthAssertionValue" type="number" class="form-control"
+             ng-model="teststep.assertions[0].otherProperties.number" ng-change="autoSave(teststepForm.$valid)"
+             ng-readonly="appStatus.isForbidden()">
+    </div>
+  </div>
+</div>
+
+<div ng-if="teststep.action === 'Dequeue'" ng-include="'/ui/views/teststeps/mq/edit-mq-teststep-dequeue-action.html'"></div>
+
+<div ng-if="teststep.action === 'Enqueue' || teststep.action === 'Publish'"
+     ng-include="'/ui/views/teststeps/mq/edit-mq-teststep-request.html'"></div>

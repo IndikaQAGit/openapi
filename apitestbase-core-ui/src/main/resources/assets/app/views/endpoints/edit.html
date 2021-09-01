@@ -1,0 +1,55 @@
+<div ng-controller="EndpointsController" ng-init="findOne()">
+  <div class="row page-header" id="page-header">
+    <div class="col-lg-7 page-header-part1">
+      <h3><div>Endpoint - {{endpoint.name}}</div></h3>
+    </div>
+    <div class="row page-header-part2">
+      <div class="col-lg-2 text-center">
+        <h4><label irt-successful-message></label></h4>
+      </div>
+      <div class="col-lg-1 text-left">
+        <h4><a class="back-link" ui-sref="environment_edit({environmentId: endpoint.environment.id})">Back</a></h4>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <form name="endpointForm" class="form-horizontal col-lg-10" role="form" novalidate>
+      <div class="form-group required">
+        <label for="environment" class="col-lg-2 control-label">Environment</label>
+        <div class="col-lg-10">
+          <input name="environment" type="text" class="form-control" ng-model="endpoint.environment.name"
+                 id="environment" readonly>
+        </div>
+      </div>
+      <div class="form-group required" ng-class="{ 'has-error' : submitted && endpointForm.name.$invalid }">
+        <label for="name" class="col-lg-2 control-label">Name</label>
+        <div class="col-lg-10">
+          <input name="name" type="text" class="form-control" ng-model="endpoint.name" id="name"
+                 ng-change="autoSave(endpointForm.$valid)" placeholder="H2 Database Endpoint"
+                 irt-select="{{ endpointNewlyCreated() }}" ng-readonly="appStatus.isForbidden()" required>
+          <div ng-show="submitted && endpointForm.name.$invalid" class="help-block">
+            <p ng-show="endpointForm.name.$error.required">Name is required</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description" class="col-lg-2 control-label">Description</label>
+        <div class="col-lg-10">
+          <textarea name="description" ng-model="endpoint.description" id="description" rows="5"
+                    ng-change="autoSave(endpointForm.$valid)" class="form-control"
+                    ng-readonly="appStatus.isForbidden()"></textarea>
+        </div>
+      </div>
+      <div ng-if="endpoint.type === 'HTTP'" ng-include="'/ui/views/endpoints/edit-http-endpoint.html'"></div>
+      <div ng-if="endpoint.type === 'SOAP'" ng-include="'/ui/views/endpoints/edit-soap-endpoint.html'"></div>
+      <div ng-if="endpoint.type === 'DB'" ng-include="'/ui/views/endpoints/edit-db-endpoint.html'"></div>
+      <div ng-if="endpoint.type === 'JMS'" ng-include="'/ui/views/endpoints/edit-jms-endpoint.html'"></div>
+      <div ng-if="endpoint.type === 'FTP'" ng-include="'/ui/views/endpoints/edit-ftp-endpoint.html'"></div>
+      <div ng-if="endpoint.type === 'MQ'" ng-include="'/ui/views/endpoints/edit-mq-endpoint.html'"></div>
+      <div ng-if="endpoint.type === 'IIB'" ng-include="'/ui/views/endpoints/edit-iib-endpoint.html'"></div>
+      <div ng-if="endpoint.type === 'AMQP'" ng-include="'/ui/views/endpoints/edit-amqp-endpoint.html'"></div>
+      <div ng-if="endpoint.type === 'MQTT'" ng-include="'/ui/views/endpoints/edit-mqtt-endpoint.html'"></div>
+    </form>
+  </div>
+</div>
+

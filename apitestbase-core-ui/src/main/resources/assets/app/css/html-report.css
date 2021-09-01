@@ -1,0 +1,31 @@
+.test-result-color-Passed, .stub-request-color-Matched {
+  color: lime;
+}
+
+.test-result-color-Failed, .stub-request-color-Unmatched {
+  color: red;
+}
+
+.separator {
+  margin-top: 15px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid black;
+}
+
+.data-driven-testcase-step-list {
+  padding-left: 20px;
+}
+
+#request-response-assertions-tab-panes {
+  height: 610px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.message-body-textarea {
+  height: 530px !important;
+}
+
+.tabs-in-test-report li:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="apitestbase">
+
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>API Test Base</title>
+  <link href="/ui/lib/bootstrap/${bootstrap.version}/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/ui/lib/angular-ui-grid/${angular-ui-grid.version}/ui-grid.css" rel="stylesheet">
+  <link href="/ui/lib/metisMenu/${metisMenu.version}/dist/metisMenu.min.css" rel="stylesheet">
+  <link href="/ui/lib/font-awesome/${font-awesome.version}/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="/ui/lib/github-com-BlackrockDigital-startbootstrap-sb-admin-2/${startbootstrap-sb-admin-2.version}/dist/css/sb-admin-2.css" rel="stylesheet">
+  <link href="/ui/common/css/common.css" rel="stylesheet">
+  <link href="/ui/css/app.css" rel="stylesheet">
+  <link href="/ui/lib/jstree/${jstree.version}/dist/themes/default/style.min.css" rel="stylesheet">
+  <link href="/ui/css/ui-grid-draggable-rows.css" rel="stylesheet">
+  <link href="/ui/css/html-report.css" rel="stylesheet">
+  <link href="data:;base64,iVBORw0KGgo=" rel="icon"> <!-- this is to avoid favicon.ico 404 error -->
+</head>
+
+<body>
+  <div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" id="page-top-navbar" role="navigation" style="margin-bottom: 0">
+      <div class="navbar-header">
+        <!-- Upper right corner button to show/hide sidebar on mobile phone -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="">API Test Base</a>
+      </div>
+      <!-- /.navbar-header -->
+
+      <div ng-include="'/ui/sidebar.html'"></div>
+
+      <div ng-include="'/ui/usermenu.html'"></div>
+
+    </nav>
+
+    <div id="page-wrapper" ui-view></div>
+
+  </div>
+  <!-- /#wrapper -->
+
+  <script src="/ui/lib/jquery/${jquery.version}/dist/jquery.min.js"></script>
+  <script src="/ui/lib/angular/${angular.version}/angular.min.js"></script>
+  <script src="/ui/lib/angular-resource/${angular.version}/angular-resource.min.js"></script>
+  <script src="/ui/lib/angular-sanitize/${angular.version}/angular-sanitize.min.js"></script>
+  <script src="/ui/lib/angular-ui-grid/${angular-ui-grid.version}/ui-grid.min.js"></script>
+  <script src="/ui/lib/angular-ui-router/${angular-ui-router.version}/release/angular-ui-router.min.js"></script>
+  <script src="/ui/lib/bootstrap/${bootstrap.version}/dist/js/bootstrap.min.js"></script>
+  <script src="/ui/lib/metisMenu/${metisMenu.version}/dist/metisMenu.min.js"></script>
+  <script src="/ui/lib/angular-bootstrap/${angular-bootstrap.version}/ui-bootstrap.min.js"></script>
+  <script src="/ui/lib/angular-bootstrap/${angular-bootstrap.version}/ui-bootstrap-tpls.min.js"></script>
+  <script src="/ui/lib/ui-grid-draggable-rows/${ui-grid-draggable-rows.version}/js/draggable-rows.js"></script>
+  <script src="/ui/lib/ng-file-upload/${ng-file-upload.version}/ng-file-upload.min.js"></script>
+  <script src="/ui/lib/jstree/${jstree.version}/dist/jstree.min.js"></script>
+  <script src="/ui/lib/ng-js-tree/${ng-js-tree.version}/dist/ngJsTree.min.js"></script>
+
+  <script src="/ui/common/js/common-module.js"></script>
+  <script src="/ui/common/js/common-services.js"></script>
+  <script src="/ui/common/js/common-controllers.js"></script>
+  <script src="/ui/js/app.js"></script>
+  <script src="/ui/js/common/common-directives.js"></script>
+  <script src="/ui/js/user/user-controller.js"></script>
+  <script src="/ui/js/user/login-modal-controller.js"></script>
+  <script src="/ui/js/user/change-password-modal-controller.js"></script>
+  <script src="/ui/js/endpoints/endpoints-routes.js"></script>
+  <script src="/ui/js/endpoints/endpoints-services.js"></script>
+  <script src="/ui/js/endpoints/endpoints-controller.js"></script>
+  <script src="/ui/js/endpoints/select-managed-endpoint-modal-controller.js"></script>
+  <script src="/ui/js/testcases/testcases-routes.js"></script>
+  <script src="/ui/js/testcases/testcases-services.js"></script>
+  <script src="/ui/js/testcases/testcases-controller.js"></script>
+  <script src="/ui/js/udps/udps-services.js"></script>
+  <script src="/ui/js/udps/udps-controller.js"></script>
+  <script src="/ui/js/udps/udp-value-textarea-editor-modal-controller.js"></script>
+  <script src="/ui/js/datatable/datatable-services.js"></script>
+  <script src="/ui/js/datatable/datatable-controller.js"></script>
+  <script src="/ui/js/datatable/datatable-string-cell-textarea-editor-modal-controller.js"></script>
+  <script src="/ui/js/teststeps/teststeps-routes.js"></script>
+  <script src="/ui/js/teststeps/teststeps-services.js"></script>
+  <script src="/ui/js/teststeps/teststeps-controller.js"></script>
+  <script src="/ui/js/teststeps/teststeps-endpoint-controller.js"></script>
+  <script src="/ui/js/teststeps/teststeps-action-controller.js"></script>
+  <script src="/ui/js/teststeps/teststeps-directives.js"></script>
+  <script src="/ui/js/teststeps/teststep-http-action-controller.js"></script>
+  <script src="/ui/js/teststeps/soap-teststep-endpoint-controller.js"></script>
+  <script src="/ui/js/teststeps/select-soap-operation-modal-controller.js"></script>
+  <script src="/ui/js/teststeps/db-teststep-action-controller.js"></script>
+  <script src="/ui/js/teststeps/jms-teststep-endpoint-controller.js"></script>
+  <script src="/ui/js/teststeps/jms-teststep-action-controller.js"></script>
+  <script src="/ui/js/teststeps/ftp-teststep-action-controller.js"></script>
+  <script src="/ui/js/teststeps/mq-teststep-action-controller.js"></script>
+  <script src="/ui/js/teststeps/iib-teststep-action-controller.js"></script>
+  <script src="/ui/js/teststeps/amqp-teststep-action-controller.js"></script>
+  <script src="/ui/js/teststeps/mqtt-teststep-action-controller.js"></script>
+  <script src="/ui/js/assertions/assertions-controller.js"></script>
+  <script src="/ui/js/assertions/jsonvalidagainstjsonschema-assertion-controller.js"></script>
+  <script src="/ui/js/assertions/xpath-assertion-controller.js"></script>
+  <script src="/ui/js/assertions/xmlvalidagainstxsd-assertion-controller.js"></script>
+  <script src="/ui/js/propertyextractors/property-extractors-controller.js"></script>
+  <script src="/ui/js/propertyextractors/property-extractors-services.js"></script>
+  <script src="/ui/js/environments/environments-routes.js"></script>
+  <script src="/ui/js/environments/environments-services.js"></script>
+  <script src="/ui/js/environments/environments-controller.js"></script>
+  <script src="/ui/js/users/users-routes.js"></script>
+  <script src="/ui/js/users/users-services.js"></script>
+  <script src="/ui/js/users/users-controller.js"></script>
+  <script src="/ui/js/users/create-user-modal-controller.js"></script>
+  <script src="/ui/js/testcaseruns/testcaseruns-services.js"></script>
+  <script src="/ui/js/testcaseruns/teststep-run-report-modal-controller.js"></script>
+  <script src="/ui/js/foldertree/foldertreenodes-services.js"></script>
+  <script src="/ui/js/foldertree/foldertree-controller.js"></script>
+  <script src="/ui/js/foldertree/import-testcase-modal-controller.js"></script>
+  <script src="/ui/js/folders/folders-routes.js"></script>
+  <script src="/ui/js/folders/folders-services.js"></script>
+  <script src="/ui/js/folders/folders-controller.js"></script>
+  <script src="/ui/js/httpstubs/httpstubs-controller.js"></script>
+  <script src="/ui/js/httpstubs/httpstub-controller.js"></script>
+  <script src="/ui/js/httpstubs/httpstubs-services.js"></script>
+  <script src="/ui/js/httpstubs/httpstubs-routes.js"></script>
+
+  <!-- Always load the error message modal template, in case API Test Base server is down during using
+    and browser is unable to alert user of the error. -->
+  <div ng-include="'/ui/common/errorMessageModalTemplate.html'"></div>
+</body>
+
+</html>

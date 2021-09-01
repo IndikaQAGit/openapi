@@ -1,0 +1,1 @@
+<#list assertionProperties.expectedHitOrder as stubNumber>#${ stubNumber }<#sep>, </#sep></#list>.

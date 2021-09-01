@@ -1,0 +1,27 @@
+<div class="form-group">
+  <label for="soapAddress" class="col-lg-2 control-label">SOAP Address</label>
+  <div class="col-lg-10">
+    <input id="soapAddress" name="soapAddress" type="text" class="form-control" ng-model="endpoint.url"
+           ng-change="soapAddressChanged(endpointForm.$valid)" placeholder="http://localhost:8081/soap/article"
+           ng-readonly="appStatus.isForbidden()" spellcheck="false">
+  </div>
+</div>
+
+<div ng-include="'/ui/views/endpoints/edit-endpoint-username-password.html'"></div>
+
+<div class="form-group">
+  <label for="wsdlURL" class="col-lg-2 control-label">WSDL URL</label>
+  <div class="col-lg-8">
+    <input id="wsdlURL" name="wsdlURL" type="text" class="form-control"
+           ng-model="endpoint.otherProperties.wsdlURL"
+           ng-change="autoSave(endpointForm.$valid)"
+           ng-readonly="appStatus.isForbidden() || endpoint.otherProperties.wsdlURLByConvention" spellcheck="false">
+  </div>
+  <div class="col-lg-2 checkbox">
+    <label>
+      <input type="checkbox" ng-model="endpoint.otherProperties.wsdlURLByConvention"
+             ng-change="toggleWSDLURLByConvention(endpointForm.$valid)"
+             ng-disabled="appStatus.isForbidden()">By Convention
+    </label>
+  </div>
+</div>

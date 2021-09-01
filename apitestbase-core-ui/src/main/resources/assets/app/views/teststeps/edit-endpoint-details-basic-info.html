@@ -1,0 +1,47 @@
+<div class="form-group">
+  <div class="col-lg-offset-2 col-lg-2">
+    <button type="button" class="btn btn-info" ng-click="enterShareEndpointMode()"
+            ng-disabled="appStatus.isForbidden() || teststep.endpoint.environment ||
+              savingStatus.changeUnsaved">Share Endpoint</button>
+  </div>
+  <div class="col-lg-2">
+    <button type="button" class="btn btn-info" ng-click="selectManagedEndpoint()"
+            ng-disabled="appStatus.isForbidden() || isInShareEndpointMode()">Select Managed Endpoint</button>
+  </div>
+  <div class="col-lg-offset-4 col-lg-2">
+    <button type="button" class="btn btn-info" ng-click="unmanageEndpoint()"
+            ng-disabled="!teststep.endpoint.environment || appStatus.isForbidden() || isInShareEndpointMode()">Unmanage Endpoint</button>
+  </div>
+</div>
+<div class="form-group required" ng-if="teststep.endpoint.environment">
+  <label for="endpointEnvironment" class="col-lg-2 control-label">Environment</label>
+  <div class="col-lg-10">
+    <select ng-if="isInShareEndpointMode()" name="endpointEnvironment" id="endpointEnvironment"
+            class="form-control" ng-model="teststep.endpoint.environment">
+      <option ng-repeat="environment in environments" ng-value="environment">{{ environment.name }}</option>
+    </select>
+    <input ng-if="!isInShareEndpointMode()" name="endpointEnvironmentName"
+           type="text" class="form-control" ng-model="teststep.endpoint.environment.name"
+           id="endpointEnvironmentName" readonly>
+  </div>
+</div>
+<div class="form-group required" ng-if="teststep.endpoint.environment"
+     ng-class="{ 'has-error' : savingStatus.submitted && teststepForm.endpointName.$invalid }">
+  <label for="endpointName" class="col-lg-2 control-label">Name</label>
+  <div class="col-lg-10">
+    <input name="endpointName" type="text" class="form-control" ng-model="teststep.endpoint.name"
+           id="endpointName" ng-readonly="!isInShareEndpointMode()" spellcheck="false" required>
+    <div ng-show="savingStatus.submitted && teststepForm.endpointName.$invalid" class="help-block">
+      <p ng-show="teststepForm.endpointName.$error.required">Name is required</p>
+    </div>
+  </div>
+</div>
+<div class="form-group" ng-if="teststep.endpoint.environment">
+  <label for="endpointDescription" class="col-lg-2 control-label">Description</label>
+  <div class="col-lg-10">
+      <textarea name="endpointDescription" ng-model="teststep.endpoint.description"
+                ng-change="isInShareEndpointMode() ? angular.noop() : autoSave(teststepForm.$valid)"
+                id="endpointDescription" rows="5" class="form-control"
+                ng-readonly="!isInShareEndpointMode()"></textarea>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div ng-controller="StubInstanceController" ng-init="find()">
+  <div class="row page-header" id="page-header">
+    <div class="col-lg-7">
+      <h3><div>Stub for {{ stubInstance.request.url }}</div></h3>
+    </div>
+  </div>
+  <div class="row">
+    <form name="stubInstanceForm" class="form-horizontal col-lg-12" role="form" novalidate>
+      <div class="form-group" ng-if="stubInstance.scenarioName">
+        <div class="col-lg-2">Scenario Name:</div>
+        <div class="col-lg-2">{{ stubInstance.scenarioName }}</div>
+        <div class="col-lg-2">Required Scenario State:</div>
+        <div class="col-lg-2">{{ stubInstance.requiredScenarioState }}</div>
+        <div ng-if="stubInstance.newScenarioState">
+          <div class="col-lg-2">New Scenario State:</div>
+          <div class="col-lg-2">{{ stubInstance.newScenarioState }}</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-1">Method:</div>
+        <div class="col-lg-1">{{ stubInstance.request.method }}</div>
+        <div ng-if="stubInstance.request.urlPattern">
+          <div class="col-lg-2">URL (Regex Matching):</div>
+          <div class="col-lg-8">{{ stubInstance.request.urlPattern }}</div>
+        </div>>
+        <div ng-if="stubInstance.request.url">
+          <div class="col-lg-1">URL:</div>
+          <div class="col-lg-8">{{ stubInstance.request.url }}</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-offset-6 col-lg-2">Response Status Code:</div>
+        <div class="col-lg-1">{{ stubInstance.response.status }}</div>
+        <div ng-if="stubInstance.response.hasOwnProperty('fixedDelayMilliseconds')">
+          <div class="col-lg-1">Delay (ms):</div>
+          <div class="col-lg-1">{{ stubInstance.response.fixedDelayMilliseconds }}</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-6">Request Headers:</div>
+        <div class="col-lg-6">Response Headers:</div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-6">
+          <textarea name="requestHeaders" rows="8" class="form-control" readonly>{{ stubRequestHeadersStr }}</textarea>
+        </div>
+        <div class="col-lg-6">
+          <textarea name="responseHeaders" rows="8" class="form-control" readonly>{{ stubResponseHeadersStr }}</textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-2">{{ requestBodyMainPattern ? 'Request Body' : '' }}</div>
+        <div class="col-lg-2">{{ requestBodyMainPattern ? requestBodyMainPattern.displayName : '' }}</div>
+        <div class="col-lg-offset-2 col-lg-6">Response Body:</div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-6">
+          <textarea name="requestBody" id="requestBody" rows="27" class="form-control"
+                    ng-if="stubInstance.request.bodyPatterns" readonly>{{ requestBodyMainPattern.value }}</textarea>
+        </div>
+        <div class="col-lg-6">
+          <textarea name="responseBody" id="responseBody" rows="27" class="form-control" readonly>{{ stubInstance.response.body }}</textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

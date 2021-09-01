@@ -1,0 +1,1 @@
+<textarea class="form-control" rows="6" readonly>${ (assertionProperties.expectedText??)?then(assertionProperties.expectedText, 'null') }</textarea>

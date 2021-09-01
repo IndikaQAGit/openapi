@@ -1,0 +1,42 @@
+<div class="form-group">
+  <label class="col-lg-2 control-label">Connection Mode</label>
+  <div class="col-lg-2 text-center">
+    <label class="control-label" title="Connect to queue manager on local machine">
+      <input type="radio" name="endpointConnectionMode" id="endpointConnectionModeBindings"
+             ng-model="teststep.endpoint.otherProperties.connectionMode"
+             ng-change="mqEndpointConnectionModeChanged(teststepForm.$valid)" value="Bindings"
+             ng-disabled="appStatus.isForbidden() || (!isInShareEndpointMode() && teststep.endpoint.environment)"> Bindings
+    </label>
+  </div>
+  <div class="col-lg-2 text-center">
+    <label class="control-label" title="Connect to queue manager on local or remote machine">
+      <input type="radio" name="endpointConnectionMode" id="endpointConnectionModeClient"
+             ng-model="teststep.endpoint.otherProperties.connectionMode"
+             ng-change="mqEndpointConnectionModeChanged(teststepForm.$valid)" value="Client"
+             ng-disabled="appStatus.isForbidden() || (!isInShareEndpointMode() && teststep.endpoint.environment)"> Client
+    </label>
+  </div>
+</div>
+<div class="form-group">
+  <label for="endpointQueueManagerName" class="col-lg-2 control-label">Queue Manager Name</label>
+  <div class="col-lg-10">
+    <input id="endpointQueueManagerName" name="endpointQueueManagerName" type="text" class="form-control"
+           ng-model="teststep.endpoint.otherProperties.queueManagerName" spellcheck="false"
+           ng-change="isInShareEndpointMode() ? angular.noop() : autoSave(teststepForm.$valid)"
+           ng-readonly="appStatus.isForbidden() || (!isInShareEndpointMode() && teststep.endpoint.environment)">
+  </div>
+</div>
+
+<div ng-if="teststep.endpoint.otherProperties.connectionMode === 'Client'"
+     ng-include="'/ui/views/teststeps/edit-endpoint-details-host-port.html'"></div>
+
+<div ng-if="teststep.endpoint.otherProperties.connectionMode === 'Client'" class="form-group">
+  <label for="endpointSvrConnChannelName" class="col-lg-2 control-label">SVRCONN Channel Name</label>
+  <div class="col-lg-10">
+    <input name="endpointSvrConnChannelName" type="text" class="form-control"
+           ng-model="teststep.endpoint.otherProperties.svrConnChannelName"
+           ng-change="isInShareEndpointMode() ? angular.noop() : autoSave(teststepForm.$valid)"
+           id="endpointSvrConnChannelName" spellcheck="false"
+           ng-readonly="appStatus.isForbidden() || (!isInShareEndpointMode() && teststep.endpoint.environment)">
+  </div>
+</div>

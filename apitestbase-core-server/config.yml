@@ -1,0 +1,88 @@
+# Web server settings.
+server:
+  # (Do not modify) Root URI for APIs
+  rootPath: '/api/*'
+  registerDefaultExceptionMappers: false
+  applicationConnectors:
+    - type: http
+      port: 8090
+      # bindHost will be ignored in team mode
+      bindHost: 127.0.0.1
+    #- type: https
+    #  port: 8443
+    #  keyStorePath: ./keystore.jks
+    #  keyStorePassword: keystorepass
+    #  validateCerts: false
+    #  supportedProtocols: [TLSv1.1,TLSv1.2]
+  adminConnectors:
+    - type: http
+      port: 8091
+  requestLog:
+    appenders:
+      - type: console
+      - type: file
+        currentLogFilename: ./logs/request.log
+        maxFileSize: 10MB
+        archivedLogFilenamePattern: ./logs/archive/request/request-%d-%i.log.gz
+        archivedFileCount: 200
+
+wireMock:
+  port: 8092
+  maxRequestJournalEntries: 100
+
+logging:
+  loggers:
+    "io.apitestbase.WireMockFileNotifier":
+      additive: false
+      appenders:
+        - type: file
+          currentLogFilename: ./logs/wiremock.log
+          maxFileSize: 10MB
+          archivedLogFilenamePattern: ./logs/archive/wiremock/wiremock-%d-%i.log.gz
+          archivedFileCount: 200
+    # Uncomment below logger for REST APIs request/response logging
+    # "org.glassfish.jersey.filter.LoggingFilter":
+    #   additive: false
+    #   appenders:
+    #     - type: file
+    #       currentLogFilename: ./logs/api.log
+    #       maxFileSize: 20MB
+    #       archivedLogFilenamePattern: ./logs/archive/api/api-%d-%i.log.gz
+    #       archivedFileCount: 200
+  appenders:
+    - type: console
+    - type: file
+      currentLogFilename: ./logs/main.log
+      maxFileSize: 15MB
+      archivedLogFilenamePattern: ./logs/archive/main/main-%d-%i.log.gz
+      archivedFileCount: 200
+
+sslTrustStorePath: ./truststore.jks
+sslTrustStorePassword: truststorepass
+
+# System database settings.
+systemDatabase:
+  # the name of your JDBC driver
+  driverClass: org.h2.Driver
+  # the username
+  user: user
+  # the password
+  password: pass
+  # the JDBC URL
+  url: jdbc:h2:./database/test;AUTO_SERVER=TRUE
+
+# Sample database settings.
+sampleDatabase:
+  # the name of your JDBC driver
+  driverClass: org.h2.Driver
+  # the username
+  user: user
+  # the password
+  password: pass
+  # the JDBC URL
+  url: jdbc:h2:./database/sample;AUTO_SERVER=TRUE
+
+viewRendererConfiguration:
+  freemarker:
+    datetime_format: MMM d, yyyy hh:mm:ss.SSS a
+

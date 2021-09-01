@@ -1,0 +1,10 @@
+<div class="form-group">
+  <label for="jdbcURL" class="col-lg-2 control-label">JDBC URL</label>
+  <div class="col-lg-10">
+    <input name="jdbcURL" type="text" class="form-control" ng-model="endpoint.url" id="jdbcURL"
+           ng-change="autoSave(endpointForm.$valid)" placeholder="jdbc:h2:~/test;AUTO_SERVER=TRUE" spellcheck="false"
+           ng-readonly="appStatus.isForbidden()">
+  </div>
+</div>
+
+<div ng-include="'/ui/views/endpoints/edit-endpoint-username-password.html'"></div>

@@ -1,0 +1,60 @@
+<div class="form-group"></div> <!-- spacer -->
+<div class="form-group">
+  <div class="col-lg-11">
+    <label for="jdbcURL" class="col-lg-2 control-label">JDBC URL</label>
+    <div class="col-lg-6">
+      <input name="jdbcURL" type="text" class="form-control" ng-change="autoSave(teststepForm.$valid)"
+             ng-model="teststep.endpoint.url" id="jdbcURL"
+             ng-readonly="appStatus.isForbidden() || teststep.endpoint.environment || teststep.endpointProperty" spellcheck="false">  <!-- readonly when not authenticated, the endpoint is a managed endpoint or the endpoint is from custom property -->
+    </div>
+    <div class="col-lg-1">
+      <button type="button" class="btn btn-info" ng-click="invoke()"
+              ng-disabled="appStatus.isForbidden() || steprun.status === 'ongoing'">Invoke</button>
+    </div>
+    <div class="col-lg-3">       <!-- Test step run status message -->
+      <h5 ng-if="steprun.status === 'ongoing'">Running the statement(s) ...</h5>
+      <h5 ng-if="steprun.status === 'finished'">Statement(s) successfully run.</h5>
+    </div>
+  </div>
+</div>
+<div class="form-group form-group-reduced-bottom-margin" height-adjustable-element-in-column="0.8">
+  <div class="col-lg-12 full-height">
+    <textarea name="request" ng-model="teststep.apiRequest.sqlScript" ng-change="autoSave(teststepForm.$valid)"
+              id="request" placeholder="SQL Select/Insert/Delete/Update Statement(s)"
+              class="form-control full-height-important" spellcheck="false"
+              ng-readonly="appStatus.isForbidden()"></textarea>
+  </div>
+</div>
+
+<div class="form-group form-group-reduced-bottom-margin" id="invocationResultArea" ng-if="steprun.response">
+  <div class="col-lg-12" ng-if="steprun.isQueryResponse">    <!-- SQL select result set -->
+    <uib-tabset>
+      <uib-tab heading="Grid View">
+        <div class="form-group"></div> <!-- spacer -->
+        <div ui-grid="responseOptions" ui-grid-resize-columns ui-grid-move-columns
+             class="ui-grid db-query-result-set-grid"></div>
+      </uib-tab>
+      <uib-tab heading="JSON View">
+        <div class="form-group"></div> <!-- spacer -->
+        <textarea class="form-control" rows="9" ng-model="steprun.response" spellcheck="false"></textarea>
+      </uib-tab>
+    </uib-tabset>
+  </div>
+  <div class="col-lg-12" ng-if="!steprun.isQueryResponse">    <!-- SQL insert/delete/update log(s) -->
+    <textarea ng-model="steprun.response"
+              class="form-control background-color-inherit" rows="9" readonly></textarea>
+    <div ng-init="invocationResultAreaLoadedCallback()"></div>
+  </div>
+</div>
+
+<div class="form-group form-group-reduced-bottom-margin" id="bottomPane">
+  <div class="col-lg-12 bottom-pane-content" ng-include="'/ui/views/assertions/list-assertions.html'"
+       ng-if="showBottomPane && bottomButtonModel.selectedButton === 'Assertions'">
+  </div>
+</div>
+<div class="form-group no-bottom-margin" ng-if="showAssertionsButton">
+  <div class="col-lg-12 btn-toolbar">
+    <label class="btn btn-info" ng-model="bottomButtonModel.selectedButton" uib-btn-radio="'Assertions'"
+           uncheckable>Assertions</label>
+  </div>
+</div>

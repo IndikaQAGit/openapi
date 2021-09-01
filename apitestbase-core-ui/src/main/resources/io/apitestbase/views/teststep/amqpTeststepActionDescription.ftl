@@ -1,0 +1,1 @@
+Send message to target "${ (stepOtherProperties.nodeAddress??)?then(stepOtherProperties.nodeAddress, 'null') }" at AMQP service URI "${ endpoint.url }".

@@ -1,0 +1,1 @@
+<#list verificationResult.actualHitOrder as stubNumber>#${ stubNumber }<#sep>, </#sep></#list>.

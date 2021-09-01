@@ -1,0 +1,1 @@
+Response status code "${ (assertionProperties.statusCode??)?then(assertionProperties.statusCode, 'null') }".

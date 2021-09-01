@@ -1,0 +1,72 @@
+<div ng-controller="HTTPStubController" ng-init="findOne()">
+  <div class="row page-header" id="page-header">
+    <div class="col-lg-4 page-header-part1">
+      <h3><div>HTTP Stub - {{httpStub.number}}</div></h3>
+    </div>
+    <div class="row page-header-part2">
+      <div class="col-lg-2 text-center">
+        <h4><label irt-successful-message></label></h4>
+      </div>
+      <div class="col-lg-offset-3 col-lg-1 text-left">
+        <h4><a class="back-link" ui-sref="testcase_edit({testcaseId: httpStub.testcaseId})">Back</a></h4>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <form name="httpStubForm" class="form-horizontal" role="form" novalidate>
+      <uib-tabset active="activeTabIndex">
+        <uib-tab heading="Basic Info">
+          <div class="form-group"></div> <!-- spacer -->
+          <div class="form-group required" ng-class="{ 'has-error' : submitted && httpStubForm.expectedHitCount.$invalid }">
+            <label for="expectedHitCount" class="col-lg-2 control-label">Expected Hit Count</label>
+            <div class="col-lg-1">
+              <input id="expectedHitCount" name="expectedHitCount" type="text" class="form-control"
+                     ng-model="httpStub.expectedHitCount" ng-change="autoSave(httpStubForm.$valid)"
+                     pattern="[1-9]\d*" ng-readonly="appStatus.isForbidden()" maxlength="3" required>
+              <div ng-show="submitted && httpStubForm.expectedHitCount.$invalid" class="help-block">
+                <p ng-show="httpStubForm.expectedHitCount.$error.required">Expected Hit Count is required</p>
+                <p ng-show="httpStubForm.expectedHitCount.$error.pattern">Please enter a valid number</p>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="isStateful" class="col-lg-2 control-label">Is Stateful</label>
+            <div class="col-lg-1">
+              <input name="isStateful" id="isStateful" type="checkbox" ng-model="isStubStateful"
+                     ng-change="toggleStubStateful(httpStubForm.$valid)" ng-disabled="appStatus.isForbidden()">
+            </div>
+          </div>
+          <div ng-if="isStubStateful">
+            <div class="form-group">
+              <label for="scenarioName" class="col-lg-2 control-label">Scenario Name</label>
+              <div class="col-lg-4">
+                <input id="scenarioName" name="scenarioName" type="text" class="form-control"
+                       ng-model="httpStub.spec.scenarioName" ng-change="autoSave(httpStubForm.$valid)"
+                       ng-readonly="appStatus.isForbidden()">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="requiredScenarioState" class="col-lg-2 control-label">Required Scenario State</label>
+              <div class="col-lg-4">
+                <input id="requiredScenarioState" name="requiredScenarioState" type="text" class="form-control"
+                       ng-model="httpStub.spec.requiredScenarioState" ng-change="autoSave(httpStubForm.$valid)"
+                       ng-readonly="appStatus.isForbidden()">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="newScenarioState" class="col-lg-2 control-label">New Scenario State</label>
+              <div class="col-lg-4">
+                <input id="newScenarioState" name="newScenarioState" type="text" class="form-control"
+                       ng-model="httpStub.spec.newScenarioState" ng-change="autoSave(httpStubForm.$valid)"
+                       ng-readonly="appStatus.isForbidden()">
+              </div>
+            </div>
+          </div>
+        </uib-tab>
+        <uib-tab heading="Spec">
+          <div ng-include="'/ui/views/httpstubs/edit-spec.html'"></div>
+        </uib-tab>
+      </uib-tabset>
+    </form>
+  </div>
+</div>
